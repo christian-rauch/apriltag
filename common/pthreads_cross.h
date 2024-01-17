@@ -47,21 +47,21 @@ typedef CONDITION_VARIABLE pthread_cond_t;
 #ifdef __cplusplus
 extern "C" {
 #endif
-APRILTAG_EXPORT int pthread_create(pthread_t *thread, pthread_attr_t *attr, void *(*start_routine)(void *), void *arg);
-APRILTAG_EXPORT int pthread_join(pthread_t thread, void **value_ptr);
-APRILTAG_EXPORT int pthread_detach(pthread_t);
+extern APRILTAG_EXPORT int pthread_create(pthread_t *thread, pthread_attr_t *attr, void *(*start_routine)(void *), void *arg);
+extern APRILTAG_EXPORT int pthread_join(pthread_t thread, void **value_ptr);
+extern APRILTAG_EXPORT int pthread_detach(pthread_t);
 
-APRILTAG_EXPORT int pthread_mutex_init(pthread_mutex_t *mutex, pthread_mutexattr_t *attr);
-APRILTAG_EXPORT int pthread_mutex_destroy(pthread_mutex_t *mutex);
-APRILTAG_EXPORT int pthread_mutex_lock(pthread_mutex_t *mutex);
-APRILTAG_EXPORT int pthread_mutex_unlock(pthread_mutex_t *mutex);
+extern APRILTAG_EXPORT int pthread_mutex_init(pthread_mutex_t *mutex, pthread_mutexattr_t *attr);
+extern APRILTAG_EXPORT int pthread_mutex_destroy(pthread_mutex_t *mutex);
+extern APRILTAG_EXPORT int pthread_mutex_lock(pthread_mutex_t *mutex);
+extern APRILTAG_EXPORT int pthread_mutex_unlock(pthread_mutex_t *mutex);
 
-APRILTAG_EXPORT int pthread_cond_init(pthread_cond_t *cond, pthread_condattr_t *attr);
-APRILTAG_EXPORT int pthread_cond_destroy(pthread_cond_t *cond);
-APRILTAG_EXPORT int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
-APRILTAG_EXPORT int pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, const struct timespec *abstime);
-APRILTAG_EXPORT int pthread_cond_signal(pthread_cond_t *cond);
-APRILTAG_EXPORT int pthread_cond_broadcast(pthread_cond_t *cond);
+extern APRILTAG_EXPORT int pthread_cond_init(pthread_cond_t *cond, pthread_condattr_t *attr);
+extern APRILTAG_EXPORT int pthread_cond_destroy(pthread_cond_t *cond);
+extern APRILTAG_EXPORT int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
+extern APRILTAG_EXPORT int pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, const struct timespec *abstime);
+extern APRILTAG_EXPORT int pthread_cond_signal(pthread_cond_t *cond);
+extern APRILTAG_EXPORT int pthread_cond_broadcast(pthread_cond_t *cond);
 
 APRILTAG_EXPORT int sched_yield(void);
 #ifdef __cplusplus
