@@ -31,7 +31,8 @@ SOFTWARE.
 #include <sched.h>
 #endif
 #include <time.h>
-#include <apriltag_export.h>
+// #include <apriltag_export.h>
+#include <visibility_control.h>
 
 #ifdef _WIN32
 
