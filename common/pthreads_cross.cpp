@@ -37,7 +37,7 @@ int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);
 int pthread_rwlock_trywrlock(pthread_rwlock_t  *rwlock);
 int pthread_rwlock_unlock(pthread_rwlock_t *rwlock);
 
-int pthread_create(pthread_t *thread, pthread_attr_t *attr, void *(*start_routine)(void *), void *arg)
+extern APRILTAG_EXPORT int pthread_create(pthread_t *thread, pthread_attr_t *attr, void *(*start_routine)(void *), void *arg)
 {
     (void) attr;
 
@@ -53,7 +53,7 @@ int pthread_create(pthread_t *thread, pthread_attr_t *attr, void *(*start_routin
     return 0;
 }
 
-int pthread_join(pthread_t thread, void **value_ptr)
+extern APRILTAG_EXPORT int pthread_join(pthread_t thread, void **value_ptr)
 {
     (void)value_ptr;
     WaitForSingleObject(thread, INFINITE);
@@ -61,13 +61,13 @@ int pthread_join(pthread_t thread, void **value_ptr)
     return 0;
 }
 
-int pthread_detach(pthread_t thread)
+extern APRILTAG_EXPORT int pthread_detach(pthread_t thread)
 {
     CloseHandle(thread);
     return 0;
 }
 
-int pthread_mutex_init(pthread_mutex_t *mutex, pthread_mutexattr_t *attr)
+extern APRILTAG_EXPORT int pthread_mutex_init(pthread_mutex_t *mutex, pthread_mutexattr_t *attr)
 {
     (void)attr;
 
@@ -78,7 +78,7 @@ int pthread_mutex_init(pthread_mutex_t *mutex, pthread_mutexattr_t *attr)
     return 0;
 }
 
-int pthread_mutex_destroy(pthread_mutex_t *mutex)
+extern APRILTAG_EXPORT int pthread_mutex_destroy(pthread_mutex_t *mutex)
 {
     if (mutex == NULL)
         return 1;
@@ -86,7 +86,7 @@ int pthread_mutex_destroy(pthread_mutex_t *mutex)
     return 0;
 }
 
-int pthread_mutex_lock(pthread_mutex_t *mutex)
+extern APRILTAG_EXPORT int pthread_mutex_lock(pthread_mutex_t *mutex)
 {
     if (mutex == NULL)
         return 1;
@@ -94,7 +94,7 @@ int pthread_mutex_lock(pthread_mutex_t *mutex)
     return 0;
 }
 
-int pthread_mutex_unlock(pthread_mutex_t *mutex)
+extern APRILTAG_EXPORT int pthread_mutex_unlock(pthread_mutex_t *mutex)
 {
     if (mutex == NULL)
         return 1;
@@ -102,7 +102,7 @@ int pthread_mutex_unlock(pthread_mutex_t *mutex)
     return 0;
 }
 
-int pthread_cond_init(pthread_cond_t *cond, pthread_condattr_t *attr)
+extern APRILTAG_EXPORT int pthread_cond_init(pthread_cond_t *cond, pthread_condattr_t *attr)
 {
     (void)attr;
     if (cond == NULL)
@@ -111,21 +111,21 @@ int pthread_cond_init(pthread_cond_t *cond, pthread_condattr_t *attr)
     return 0;
 }
 
-int pthread_cond_destroy(pthread_cond_t *cond)
+extern APRILTAG_EXPORT int pthread_cond_destroy(pthread_cond_t *cond)
 {
     /* Windows does not have a destroy for conditionals */
     (void)cond;
     return 0;
 }
 
-int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex)
+extern APRILTAG_EXPORT int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex)
 {
     if (cond == NULL || mutex == NULL)
         return 1;
     return pthread_cond_timedwait(cond, mutex, NULL);
 }
 
-int pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex,
+extern APRILTAG_EXPORT int pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex,
         const struct timespec *abstime)
 {
     if (cond == NULL || mutex == NULL)
@@ -135,7 +135,7 @@ int pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex,
     return 0;
 }
 
-int pthread_cond_signal(pthread_cond_t *cond)
+extern APRILTAG_EXPORT int pthread_cond_signal(pthread_cond_t *cond)
 {
     if (cond == NULL)
         return 1;
@@ -143,7 +143,7 @@ int pthread_cond_signal(pthread_cond_t *cond)
     return 0;
 }
 
-int pthread_cond_broadcast(pthread_cond_t *cond)
+extern APRILTAG_EXPORT int pthread_cond_broadcast(pthread_cond_t *cond)
 {
     if (cond == NULL)
         return 1;
@@ -151,7 +151,7 @@ int pthread_cond_broadcast(pthread_cond_t *cond)
     return 0;
 }
 
-int pthread_rwlock_init(pthread_rwlock_t *rwlock, const pthread_rwlockattr_t *attr)
+extern APRILTAG_EXPORT int pthread_rwlock_init(pthread_rwlock_t *rwlock, const pthread_rwlockattr_t *attr)
 {
     (void)attr;
     if (rwlock == NULL)
@@ -161,13 +161,13 @@ int pthread_rwlock_init(pthread_rwlock_t *rwlock, const pthread_rwlockattr_t *at
     return 0;
 }
 
-int pthread_rwlock_destroy(pthread_rwlock_t *rwlock)
+extern APRILTAG_EXPORT int pthread_rwlock_destroy(pthread_rwlock_t *rwlock)
 {
     (void)rwlock;
     return 0;
 }
 
-int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock)
+extern APRILTAG_EXPORT int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock)
 {
     if (rwlock == NULL)
         return 1;
@@ -175,14 +175,14 @@ int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock)
     return 0;
 }
 
-int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock)
+extern APRILTAG_EXPORT int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock)
 {
     if (rwlock == NULL)
         return 1;
     return !TryAcquireSRWLockShared(&(rwlock->lock));
 }
 
-int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock)
+extern APRILTAG_EXPORT int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock)
 {
     if (rwlock == NULL)
         return 1;
@@ -191,7 +191,7 @@ int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock)
     return 0;
 }
 
-int pthread_rwlock_trywrlock(pthread_rwlock_t  *rwlock)
+extern APRILTAG_EXPORT int pthread_rwlock_trywrlock(pthread_rwlock_t  *rwlock)
 {
     BOOLEAN ret;
 
@@ -204,7 +204,7 @@ int pthread_rwlock_trywrlock(pthread_rwlock_t  *rwlock)
     return ret;
 }
 
-int pthread_rwlock_unlock(pthread_rwlock_t *rwlock)
+extern APRILTAG_EXPORT int pthread_rwlock_unlock(pthread_rwlock_t *rwlock)
 {
     if (rwlock == NULL)
         return 1;
