@@ -29,6 +29,8 @@ if (ASAN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ASAN_FLAGS}")
 endif()
 
+include(GenerateExportHeader)
+
 # Set a default build type if none was specified
 set(default_build_type "Release")
 
@@ -67,6 +69,14 @@ set(APRILTAG_SRCS apriltag.c apriltag_pose.c apriltag_quad_thresh.c)
 file(GLOB TAG_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tag*.c)
 add_library(${PROJECT_NAME} ${APRILTAG_SRCS} ${COMMON_SRC} ${TAG_FILES})
 
+generate_export_header(${PROJECT_NAME})
+
+# string(TOUPPER ${PROJECT_NAME} ${PROJECT_NAME}_UPPER)
+# generate_export_header(${PROJECT_NAME}
+#     BASE_NAME ${${PROJECT_NAME}_UPPER}
+#     EXPORT_MACRO_NAME ${${PROJECT_NAME}_UPPER}_EXPORT
+# )
+
 if (MSVC)
     add_compile_definitions("_CRT_SECURE_NO_WARNINGS")
 else()
@@ -84,6 +94,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX "d")
 include(GNUInstallDirs)
 target_include_directories(${PROJECT_NAME} PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/>"
+    "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>/apriltag")
 
@@ -96,6 +107,7 @@ foreach(HEADER ${HEADER_FILES})
     string(REGEX MATCH "(.*)[/\\]" DIR ${HEADER})
     install(FILES ${HEADER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}/${DIR})
 endforeach()
+install(FILES ${PROJECT_BINARY_DIR}/${PROJECT_NAME}_export.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
 
 # export library
 set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
