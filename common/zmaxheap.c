@@ -373,10 +373,10 @@ void zmaxheap_test()
 
         if ((random() & 1) == 0 && sz < cap) {
             // add a value
-            int32_t v = (int32_t) (random() / 1000);
+            float v = random() / 1000.f;
             float fv = v;
 
-            vals[sz] = v;
+            vals[sz] = (int32_t)v;
             zmaxheap_add(heap, &v, fv);
             sz++;
 

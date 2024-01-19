@@ -125,7 +125,7 @@ char *_str_concat_private(const char *first, ...)
 }
 
 // Returns the index of the first character that differs:
-int str_diff_idx(const char * a, const char * b)
+size_t str_diff_idx(const char * a, const char * b)
 {
     assert(a != NULL);
     assert(b != NULL);

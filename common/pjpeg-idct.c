@@ -263,7 +263,7 @@ void pjpeg_idct_2D_double(int32_t in[64], uint8_t *out, uint32_t outstride)
                 dout[i] = 255;
 
             // XXX round by adding +.5?
-            out[y*outstride + x] = dout[i];
+            out[y*outstride + x] = (uint8_t)dout[i];
         }
     }
 }

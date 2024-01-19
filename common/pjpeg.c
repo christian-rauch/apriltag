@@ -833,7 +833,7 @@ pjpeg_t *pjpeg_create_from_file(const char *path, uint32_t flags, int *error)
 
     uint8_t *buf = malloc(buflen);
     fseek(f, 0, SEEK_SET);
-    int res = fread(buf, 1, buflen, f);
+    size_t res = fread(buf, 1, buflen, f);
 
     if ( ferror(f) ){
         debug_print ("Read failed");

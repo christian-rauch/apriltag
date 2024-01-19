@@ -41,7 +41,7 @@ either expressed or implied, of the Regents of The University of Michigan.
 struct zhash
 {
     size_t keysz, valuesz;
-    int    entrysz; // valid byte (1) + keysz + values
+    size_t entrysz; // valid byte (1) + keysz + values
 
     uint32_t(*hash)(const void *a);
 

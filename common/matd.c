@@ -706,7 +706,7 @@ static matd_t *matd_op_recurse(const char *expr, int *pos, matd_t *acc, matd_t *
                 const char *start = &expr[*pos];
                 char *end;
                 double s = strtod(start, &end);
-                (*pos) += (end - start);
+                (*pos) += (int)(end - start);
                 matd_t *rhs = matd_create_scalar(s);
                 garb[*garbpos] = rhs;
                 (*garbpos)++;

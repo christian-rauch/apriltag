@@ -169,7 +169,7 @@ void image_u8x3_draw_line(image_u8x3_t *im, float x0, float y0, float x1, float 
     double delta = 0.5 / dist;
 
     // terrible line drawing code
-    for (float f = 0; f <= 1; f += delta) {
+    for (double f = 0; f <= 1; f += delta) {
         int x = ((int) (x1 + (x0 - x1) * f));
         int y = ((int) (y1 + (y0 - y1) * f));
 
@@ -230,7 +230,7 @@ void image_u8x3_gaussian_blur(image_u8x3_t *im, double sigma, int ksz)
 
     uint8_t *k = malloc(sizeof(uint8_t)*ksz);
     for (int i = 0; i < ksz; i++)
-        k[i] = dk[i]*255;
+        k[i] = (uint8_t)dk[i]*255;
 
     if (0) {
         for (int i = 0; i < ksz; i++)
