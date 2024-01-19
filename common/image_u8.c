@@ -263,11 +263,11 @@ void image_u8_draw_annulus(image_u8_t *im, float x0, float y0, float r0, float r
 // only widths 1 and 3 supported (and 3 only badly)
 void image_u8_draw_line(image_u8_t *im, float x0, float y0, float x1, float y1, int v, int width)
 {
-    double dist = sqrtf((y1-y0)*(y1-y0) + (x1-x0)*(x1-x0));
+    float dist = sqrtf((y1-y0)*(y1-y0) + (x1-x0)*(x1-x0));
     if (dist == 0) {
         return;
     }
-    double delta = 0.5 / dist;
+    float delta = 0.5f / dist;
 
     // terrible line drawing code
     for (float f = 0; f <= 1; f += delta) {
@@ -390,24 +390,24 @@ image_u8_t *image_u8_rotate(const image_u8_t *in, double rad, uint8_t pad)
     int iwidth = in->width, iheight = in->height;
     rad = -rad; // interpret y as being "down"
 
-    float c = cos(rad), s = sin(rad);
+    double c = cos(rad), s = sin(rad);
 
-    float p[][2] = { { 0, 0}, { iwidth, 0 }, { iwidth, iheight }, { 0, iheight} };
+    double p[][2] = { { 0, 0}, { iwidth, 0 }, { iwidth, iheight }, { 0, iheight} };
 
-    float xmin = HUGE_VALF, xmax = -HUGE_VALF, ymin = HUGE_VALF, ymax = -HUGE_VALF;
-    float icx = iwidth / 2.0, icy = iheight / 2.0;
+    double xmin = HUGE_VALF, xmax = -HUGE_VALF, ymin = HUGE_VALF, ymax = -HUGE_VALF;
+    double icx = iwidth / 2.0, icy = iheight / 2.0;
 
     for (int i = 0; i < 4; i++) {
-        float px = p[i][0] - icx;
-        float py = p[i][1] - icy;
+        double px = p[i][0] - icx;
+        double py = p[i][1] - icy;
 
-        float nx = px*c - py*s;
-        float ny = px*s + py*c;
+        double nx = px*c - py*s;
+        double ny = px*s + py*c;
 
-        xmin = fmin(xmin, nx);
-        xmax = fmax(xmax, nx);
-        ymin = fmin(ymin, ny);
-        ymax = fmax(ymax, ny);
+        xmin = min(xmin, nx);
+        xmax = max(xmax, nx);
+        ymin = min(ymin, ny);
+        ymax = max(ymax, ny);
     }
 
     int owidth = ceil(xmax-xmin), oheight = ceil(ymax - ymin);
@@ -418,8 +418,8 @@ image_u8_t *image_u8_rotate(const image_u8_t *in, double rad, uint8_t pad)
         for (int ox = 0; ox < owidth; ox++) {
             // work backwards from destination coordinates...
             // sample pixel centers.
-            float sx = ox - owidth / 2.0 + .5;
-            float sy = oy - oheight / 2.0 + .5;
+            double sx = ox - owidth / 2.0 + .5;
+            double sy = oy - oheight / 2.0 + .5;
 
             // project into input-image space
             int ix = floor(sx*c + sy*s + icx);
@@ -506,7 +506,7 @@ void image_u8_fill_line_max(image_u8_t *im, const image_u8_lut_t *lut, const flo
 {
     // what is the maximum distance that will result in drawing into our LUT?
     float max_dist2 = (lut->nvalues-1)/lut->scale;
-    float max_dist = sqrt(max_dist2);
+    double max_dist = sqrt(max_dist2);
 
     // the orientation of the line
     double theta = atan2(xy1[1]-xy0[1], xy1[0]-xy0[0]);
@@ -520,19 +520,19 @@ void image_u8_fill_line_max(image_u8_t *im, const image_u8_lut_t *lut, const flo
 
     // the line segment xy0---xy1 can be parameterized in terms of line coordinates.
     // We fix xy0 to be at line coordinate 0.
-    float xy1_line_coord = (xy1[0]-xy0[0])*u + (xy1[1]-xy0[1])*v;
+    double xy1_line_coord = (xy1[0]-xy0[0])*u + (xy1[1]-xy0[1])*v;
 
-    float min_line_coord = fmin(0, xy1_line_coord);
-    float max_line_coord = fmax(0, xy1_line_coord);
+    double min_line_coord = fmin(0, xy1_line_coord);
+    double max_line_coord = fmax(0, xy1_line_coord);
 
     for (int iy = iy0; iy <= iy1; iy++) {
-        float y = iy+.5;
+        float y = iy+.5f;
 
         for (int ix = ix0; ix <= ix1; ix++) {
-            float x = ix+.5;
+            float x = ix+.5f;
 
             // compute line coordinate of this pixel.
-            float line_coord = (x - xy0[0])*u + (y - xy0[1])*v;
+            double line_coord = (x - xy0[0])*u + (y - xy0[1])*v;
 
             // find point on line segment closest to our current pixel.
             if (line_coord < min_line_coord)
@@ -540,8 +540,8 @@ void image_u8_fill_line_max(image_u8_t *im, const image_u8_lut_t *lut, const flo
             else if (line_coord > max_line_coord)
                 line_coord = max_line_coord;
 
-            float px = xy0[0] + line_coord*u;
-            float py = xy0[1] + line_coord*v;
+            double px = xy0[0] + line_coord*u;
+            double py = xy0[1] + line_coord*v;
 
             double dist2 = (x-px)*(x-px) + (y-py)*(y-py);
 

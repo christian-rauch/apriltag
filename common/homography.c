@@ -287,9 +287,9 @@ matd_t *homography_to_pose(const matd_t *H, double fx, double fy, double cx, dou
 
     // compute the scale by requiring that the rotation columns are unit length
     // (Use geometric average of the two length vectors we have)
-    double length1 = sqrtf(R00*R00 + R10*R10 + R20*R20);
-    double length2 = sqrtf(R01*R01 + R11*R11 + R21*R21);
-    double s = 1.0 / sqrtf(length1 * length2);
+    double length1 = sqrt(R00*R00 + R10*R10 + R20*R20);
+    double length2 = sqrt(R01*R01 + R11*R11 + R21*R21);
+    double s = 1.0 / sqrt(length1 * length2);
 
     // get sign of S by requiring the tag to be in front the camera;
     // we assume camera looks in the -Z direction.
@@ -372,9 +372,9 @@ matd_t *homography_to_model_view(const matd_t *H, double F, double G, double A, 
 
     // compute the scale by requiring that the rotation columns are unit length
     // (Use geometric average of the two length vectors we have)
-    double length1 = sqrtf(R00*R00 + R10*R10 + R20*R20);
-    double length2 = sqrtf(R01*R01 + R11*R11 + R21*R21);
-    double s = 1.0 / sqrtf(length1 * length2);
+    double length1 = sqrt(R00*R00 + R10*R10 + R20*R20);
+    double length2 = sqrt(R01*R01 + R11*R11 + R21*R21);
+    double s = 1.0 / sqrt(length1 * length2);
 
     // get sign of S by requiring the tag to be in front of the camera
     // (which is Z < 0) for our conventions.

@@ -35,7 +35,7 @@ either expressed or implied, of the Regents of The University of Michigan.
 
 double g2d_distance(const double a[2], const double b[2])
 {
-    return sqrtf(sq(a[0]-b[0]) + sq(a[1]-b[1]));
+    return sqrt(sq(a[0]-b[0]) + sq(a[1]-b[1]));
 }
 
 zarray_t *g2d_polygon_create_empty()
@@ -412,7 +412,7 @@ void g2d_line_init_from_points(g2d_line_t *line, const double p0[2], const doubl
     line->p[1] = p0[1];
     line->u[0] = p1[0]-p0[0];
     line->u[1] = p1[1]-p0[1];
-    double mag = sqrtf(sq(line->u[0]) + sq(line->u[1]));
+    double mag = sqrt(sq(line->u[0]) + sq(line->u[1]));
 
     line->u[0] /= mag;
     line->u[1] /= mag;
