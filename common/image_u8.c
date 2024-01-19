@@ -227,14 +227,14 @@ void image_u8_draw_circle(image_u8_t *im, float x0, float y0, float r, int v)
 {
     r = r*r;
 
-    for (int y = y0-r; y <= y0+r; y++) {
-        for (int x = x0-r; x <= x0+r; x++) {
+    for (float y = y0-r; y <= y0+r; y++) {
+        for (float x = x0-r; x <= x0+r; x++) {
             float d = (x-x0)*(x-x0) + (y-y0)*(y-y0);
             if (d > r)
                 continue;
 
             if (x >= 0 && x < im->width && y >= 0 && y < im->height) {
-                int idx = y*im->stride + x;
+                int idx = (int)(y*im->stride + x);
                 im->buf[idx] = v;
             }
         }
@@ -248,13 +248,13 @@ void image_u8_draw_annulus(image_u8_t *im, float x0, float y0, float r0, float r
 
     assert(r0 < r1);
 
-    for (int y = y0-r1; y <= y0+r1; y++) {
-        for (int x = x0-r1; x <= x0+r1; x++) {
+    for (float y = y0-r1; y <= y0+r1; y++) {
+        for (float x = x0-r1; x <= x0+r1; x++) {
             float d = (x-x0)*(x-x0) + (y-y0)*(y-y0);
             if (d < r0 || d > r1)
                 continue;
 
-            int idx = y*im->stride + x;
+            int idx = (int)(y*im->stride + x);
             im->buf[idx] = v;
         }
     }
@@ -373,7 +373,7 @@ void image_u8_gaussian_blur(image_u8_t *im, double sigma, int ksz)
 
     uint8_t *k = malloc(sizeof(uint8_t)*ksz);
     for (int i = 0; i < ksz; i++)
-        k[i] = dk[i]*255;
+        k[i] = (uint8_t)(dk[i]*255);
 
     if (0) {
         for (int i = 0; i < ksz; i++)
@@ -410,7 +410,7 @@ image_u8_t *image_u8_rotate(const image_u8_t *in, double rad, uint8_t pad)
         ymax = max(ymax, ny);
     }
 
-    int owidth = ceil(xmax-xmin), oheight = ceil(ymax - ymin);
+    int owidth = (int)ceil(xmax-xmin), oheight = (int)ceil(ymax - ymin);
     image_u8_t *out = image_u8_create(owidth, oheight);
 
     // iterate over output pixels.
@@ -422,8 +422,8 @@ image_u8_t *image_u8_rotate(const image_u8_t *in, double rad, uint8_t pad)
             double sy = oy - oheight / 2.0 + .5;
 
             // project into input-image space
-            int ix = floor(sx*c + sy*s + icx);
-            int iy = floor(-sx*s + sy*c + icy);
+            int ix = (int)floor(sx*c + sy*s + icx);
+            int iy = (int)floor(-sx*s + sy*c + icy);
 
             if (ix >= 0 && iy >= 0 && ix < iwidth && iy < iheight)
                 out->buf[oy*out->stride+ox] = in->buf[iy*in->stride + ix];
@@ -512,11 +512,11 @@ void image_u8_fill_line_max(image_u8_t *im, const image_u8_lut_t *lut, const flo
     double theta = atan2(xy1[1]-xy0[1], xy1[0]-xy0[0]);
     double v = sin(theta), u = cos(theta);
 
-    int ix0 = iclamp(fmin(xy0[0], xy1[0]) - max_dist, 0, im->width-1);
-    int ix1 = iclamp(fmax(xy0[0], xy1[0]) + max_dist, 0, im->width-1);
+    int ix0 = iclamp((int)(fmin(xy0[0], xy1[0]) - max_dist), 0, im->width-1);
+    int ix1 = iclamp((int)(fmax(xy0[0], xy1[0]) + max_dist), 0, im->width-1);
 
-    int iy0 = iclamp(fmin(xy0[1], xy1[1]) - max_dist, 0, im->height-1);
-    int iy1 = iclamp(fmax(xy0[1], xy1[1]) + max_dist, 0, im->height-1);
+    int iy0 = iclamp((int)(fmin(xy0[1], xy1[1]) - max_dist), 0, im->height-1);
+    int iy1 = iclamp((int)(fmax(xy0[1], xy1[1]) + max_dist), 0, im->height-1);
 
     // the line segment xy0---xy1 can be parameterized in terms of line coordinates.
     // We fix xy0 to be at line coordinate 0.
@@ -546,7 +546,7 @@ void image_u8_fill_line_max(image_u8_t *im, const image_u8_lut_t *lut, const flo
             double dist2 = (x-px)*(x-px) + (y-py)*(y-py);
 
             // not in our LUT?
-            int idx = dist2 * lut->scale;
+            int idx = (int)(dist2 * lut->scale);
             if (idx >= lut->nvalues)
                 continue;
 
