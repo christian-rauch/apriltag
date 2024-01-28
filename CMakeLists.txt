@@ -210,3 +210,7 @@ if (BUILD_EXAMPLES)
     # install example programs
     install(TARGETS apriltag_demo RUNTIME DESTINATION bin)
 endif()
+
+if(BUILD_TESTING)
+    add_subdirectory(test)
+endif()
